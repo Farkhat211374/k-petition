@@ -16,6 +16,7 @@ const close = () => {
 <template>
   <div class="wrapper">
     <q-btn
+      class="q-ml-xl"
       color="primary"
       icon="my_location"
       label="Добавить предложение"
