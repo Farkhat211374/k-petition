@@ -1,9 +1,16 @@
 <script setup>
-import thumbs from "../../assets/like.svg";
+import like from "../../assets/like.svg";
+import dislike from "../../assets/dislike.svg";
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+const onClickView = () => {
+  router.push("/petition/123");
+};
 </script>
 
 <template>
-  <div class="q-pa-md row items-start q-gutter-md">
+  <div class="">
     <q-card class="my-card" flat bordered>
       <q-img
         src="https://www.dirmagazina.ru/images/NewArticles/767/maxresdefault.jpg"
@@ -20,7 +27,7 @@ import thumbs from "../../assets/like.svg";
           переутомлению и стрессу у сотрудников, что отрицательно влияет на их
           эффективность и мотивацию
         </div>
-        <div class="q-mt-xl q-mb-md">
+        <div class="q-mt-xl q-mb-xs">
           <div class="text-caption text-grey">Направление деятельности</div>
           <div class="text-subtitle1 text-blue-10 text-weight-bold">
             Бытовые условия
@@ -39,14 +46,46 @@ import thumbs from "../../assets/like.svg";
           Завершена 01.08.2024
         </div>
 
-        <!--        <div>-->
-        <!--          <img :src="thumbs" height="30px" alt="thumbs">-->
-        <!--        </div>-->
+        <div class="q-mt-md row justify-between">
+          <div class="row">
+            <div class="row items-center">
+              <img :src="like" height="20px" alt="thumbs" />
+              <div
+                class="q-ml-sm q-mt-xs text-overline text-info text-weight-bold"
+              >
+                121
+              </div>
+            </div>
+            <div class="row items-center q-ml-lg">
+              <img
+                :src="dislike"
+                height="20px"
+                alt="thumbs"
+                style="transform: scaleY(-1)"
+                class="q-mt-sm"
+              />
+              <div
+                class="q-ml-sm q-mt-xs text-overline text-info text-weight-bold"
+              >
+                25
+              </div>
+            </div>
+          </div>
+          <div>
+            <q-card-actions class="q-ml-lg row justify-end">
+              <q-btn
+                rounded
+                size="md"
+                color="primary"
+                label="Просмотреть"
+                @click="onClickView"
+                no-caps
+              />
+              <q-space />
+            </q-card-actions>
+          </div>
+        </div>
       </q-card-section>
-      <q-card-actions>
-        <q-btn flat color="primary" label="Подробнее" />
-        <q-space />
-      </q-card-actions>
     </q-card>
   </div>
 </template>
@@ -55,4 +94,7 @@ import thumbs from "../../assets/like.svg";
 .my-card
   width: 100%
   max-width: 350px
+
+.image-colored
+  color: #fff
 </style>
