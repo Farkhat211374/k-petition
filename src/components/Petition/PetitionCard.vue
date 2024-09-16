@@ -1,10 +1,16 @@
 <script setup>
 import like from "../../assets/like.svg";
 import dislike from "../../assets/dislike.svg";
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+const onClickView = () => {
+  router.push("/petition/123");
+};
 </script>
 
 <template>
-  <div class="q-pa-md row items-start q-gutter-md">
+  <div class="">
     <q-card class="my-card" flat bordered>
       <q-img
         src="https://www.dirmagazina.ru/images/NewArticles/767/maxresdefault.jpg"
@@ -72,6 +78,7 @@ import dislike from "../../assets/dislike.svg";
                 size="md"
                 color="primary"
                 label="Просмотреть"
+                @click="onClickView"
                 no-caps
               />
               <q-space />
