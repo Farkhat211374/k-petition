@@ -3,47 +3,49 @@ import like from "../../assets/like.svg";
 import dislike from "../../assets/dislike.svg";
 import { useRouter } from "vue-router";
 const router = useRouter();
+defineProps({
+  petition: Object,
+});
 
-const onClickView = () => {
-  router.push("/petition/123");
+const onClickView = (id) => {
+  router.push(`/petition/${id}`);
 };
 </script>
 
 <template>
   <div class="">
     <q-card class="my-card" flat bordered>
-      <q-img
-        src="https://www.dirmagazina.ru/images/NewArticles/767/maxresdefault.jpg"
-      />
-      <q-card-section>
-        <div class="text-overline text-orange-9">08.07.2024</div>
+      <q-img :src="petition.imageUrl" :ratio="16 / 9" />
+      <q-card-section class="justify-between">
+        <div class="text-overline text-orange-9">
+          {{ petition.create_date }}
+        </div>
         <div class="text-caption text-grey q-mt-xs">Наименование проблемы</div>
         <div class="text-h5 q-mb-md text-blue-10 text-weight-bold">
-          Организация зон отдыха и релаксации в офисах
+          {{ petition.title }}
+          <!-- Организация зон отдыха и релаксации в офисах -->
         </div>
         <div class="text-caption text-grey">Подробное описание</div>
         <div class="text-body1">
-          Отсутствие специально оборудованных зон отдыха в офисах приводит к
-          переутомлению и стрессу у сотрудников, что отрицательно влияет на их
-          эффективность и мотивацию
+          {{ petition.description }}
         </div>
         <div class="q-mt-xl q-mb-xs">
           <div class="text-caption text-grey">Направление деятельности</div>
           <div class="text-subtitle1 text-blue-10 text-weight-bold">
-            Бытовые условия
+            {{ petition.activity.name }}
           </div>
           <div class="text-caption text-grey">Классификация проблемы</div>
           <div class="text-subtitle1 text-blue-10 text-weight-bold">
-            Материальное обеспечение
+            {{ petition.classification.name }}
           </div>
           <div class="text-caption text-grey">Автор проблемы</div>
           <div class="text-subtitle1 text-blue-10 text-weight-bold">
-            Сотрудник службы ИБ - Сағат Ф. И.
+            {{ petition.author }}
           </div>
         </div>
 
         <div class="text-subtitle1 text-positive text-weight-bold">
-          Завершена 01.08.2024
+          {{ petition.status }} 01.08.2024
         </div>
 
         <div class="q-mt-md row justify-between">
@@ -53,7 +55,7 @@ const onClickView = () => {
               <div
                 class="q-ml-sm q-mt-xs text-overline text-info text-weight-bold"
               >
-                121
+                {{ petition.likes_count }}
               </div>
             </div>
             <div class="row items-center q-ml-lg">
@@ -67,7 +69,7 @@ const onClickView = () => {
               <div
                 class="q-ml-sm q-mt-xs text-overline text-info text-weight-bold"
               >
-                25
+                {{ petition.dislikes_count }}
               </div>
             </div>
           </div>
@@ -78,7 +80,7 @@ const onClickView = () => {
                 size="md"
                 color="primary"
                 label="Просмотреть"
-                @click="onClickView"
+                @click="onClickView(petition.id)"
                 no-caps
               />
               <q-space />

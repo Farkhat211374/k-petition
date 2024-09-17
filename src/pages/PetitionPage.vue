@@ -2,8 +2,33 @@
 import like from "../assets/like.svg";
 import dislike from "../assets/dislike.svg";
 import PetitionPageTimeLine from "src/components/Petition/PetitionPageTimeLine.vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import { usePetitionStore } from "../stores/petitionStore";
+import { onMounted } from "vue";
+import { ref } from "vue";
+import { watch } from "vue";
+const route = useRoute();
 const router = useRouter();
+const id = ref(route.params.id);
+
+const data = ref({});
+const loading = ref(true);
+const error = ref(null);
+const petitionStore = usePetitionStore();
+
+onMounted(async () => {
+  if (id.value) {
+    await petitionStore.fetchData(id.value);
+    data.value = petitionStore.getData;
+  }
+});
+
+watch(
+  () => petitionStore.loading,
+  (newLoading) => {
+    loading.value = newLoading;
+  }
+);
 
 const onClickBack = () => {
   router.push("/");
@@ -11,7 +36,7 @@ const onClickBack = () => {
 </script>
 
 <template>
-  <div class="q-pa-lg fit row justify-between">
+  <div v-if="!loading" class="q-pa-lg fit row justify-between">
     <div class="left-content q-px-md">
       <div class="text-h4 text-blue-10 text-weight-bold">
         <q-btn
@@ -22,40 +47,37 @@ const onClickBack = () => {
           @click="onClickBack"
           class="q-mr-md"
         />
-        Организация зон отдыха и релаксации в офисах
+        {{ data.title }}
       </div>
       <div class="q-pt-lg rounded">
         <q-img
-          src="https://www.dirmagazina.ru/images/NewArticles/767/maxresdefault.jpg"
+          :src="data.imageUrl"
           spinner-color="white"
           class="rounded-borders"
         />
       </div>
       <div class="q-pt-lg text-body1">
         <div class="text-caption text-grey">Подробное описание</div>
-        Отсутствие специально оборудованных зон отдыха в офисах приводит к
-        переутомлению и стрессу у сотрудников, что отрицательно влияет на их
-        эффективность и мотивацию. В условиях постоянной нагрузки и недостатка
-        времени для полноценного отдыха, работники сталкиваются с проблемами в
-        концентрации, ухудшением общего самочувствия и увеличением числа ошибок
-        в работе. Длительный стресс и хроническая усталость могут вызывать не
-        только снижение производительности, но и физические проблемы, такие как
-        головные боли, нарушение сна и ослабление иммунной системы. Это, в свою
-        очередь, приводит к увеличению числа больничных дней и снижению общего
-        уровня удовлетворённости работой.
+        {{ data.description }}
       </div>
 
-      <div class="q-pt-xl text-h6 text-blue-10 text-weight-bold">
+      <div
+        v-if="data.activity"
+        class="q-pt-xl text-h6 text-blue-10 text-weight-bold"
+      >
         <div class="text-caption text-grey">Направление деятельности</div>
-        Бытовые условия
+        {{ data.activity.name }}
       </div>
-      <div class="q-pt-sm text-h6 text-blue-10 text-weight-bold">
+      <div
+        v-if="data.classification"
+        class="q-pt-sm text-h6 text-blue-10 text-weight-bold"
+      >
         <div class="text-caption text-grey">Классификация проблемы</div>
-        Материальное обеспечение
+        {{ data.classification.name }}
       </div>
       <div class="q-pt-sm text-h6 text-blue-10 text-weight-bold">
         <div class="text-caption text-grey">Автор проблемы</div>
-        Сотрудник службы ИБ - Сағат Ф. И.
+        {{ data.author }}
       </div>
       <div class="q-mt-md row justify-between">
         <div class="row">
@@ -64,7 +86,7 @@ const onClickBack = () => {
             <div
               class="q-ml-sm q-mt-xs text-subtitle1 text-info text-weight-bold"
             >
-              121
+              {{ data.likes_count }}
             </div>
           </div>
           <div class="row items-center q-ml-lg">
@@ -78,13 +100,13 @@ const onClickBack = () => {
             <div
               class="q-ml-sm q-mt-xs text-subtitle1 text-info text-weight-bold"
             >
-              25
+              {{ data.dislikes_count }}
             </div>
           </div>
         </div>
       </div>
       <div class="q-pt-md text-h6 text-positive text-weight-bold">
-        Завершена 01.08.2024
+        {{ data.status }}
       </div>
     </div>
     <div class="timeline-container">

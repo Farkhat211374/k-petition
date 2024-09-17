@@ -1,18 +1,27 @@
 <script setup>
 import PetitionCard from "components/Petition/PetitionCard.vue";
 import { ref } from "vue";
+import { usePetitionStore } from "../../stores/petitionStore";
+import { onMounted } from "vue";
+
+const data = ref([]);
+const petitionStore = usePetitionStore();
+onMounted(async () => {
+  await petitionStore.fetchAllData();
+  data.value = petitionStore.getData;
+});
 
 const status_options = ref(["Открытый", "Закрытый"]);
 const status = ref(status_options.value[0]);
 
-const qualification_options = ref([
+const classification_options = ref([
   "Материальное обеспечение",
   "Квалификация сотрудников",
   "Профессиональное развитие",
   "Оборудование",
   "Финансовая поддержка",
 ]);
-const qualification = ref(qualification_options.value[0]);
+const classification = ref(classification_options.value[0]);
 
 const activity_options = ref([
   "Бытовые условия",
@@ -35,10 +44,10 @@ const activity = ref(activity_options.value[0]);
         label="Статус"
         class="q-mr-md custom-height"
       >
-        <template v-if="model" v-slot:append>
+        <template v-if="status" v-slot:append>
           <q-icon
             name="cancel"
-            @click.stop.prevent="model = null"
+            @click.stop.prevent="status = null"
             class="cursor-pointer"
           />
         </template>
@@ -46,15 +55,15 @@ const activity = ref(activity_options.value[0]);
       <q-select
         color="blue"
         filled
-        v-model="qualification"
-        :options="qualification_options"
+        v-model="classification"
+        :options="classification_options"
         label="Направление деятельности"
         class="q-mr-md"
       >
-        <template v-if="model" v-slot:append>
+        <template v-if="classification" v-slot:append>
           <q-icon
             name="cancel"
-            @click.stop.prevent="model = null"
+            @click.stop.prevent="classification = null"
             class="cursor-pointer"
           />
         </template>
@@ -67,28 +76,21 @@ const activity = ref(activity_options.value[0]);
         label="Классификация проблемы"
         class="q-mr-md"
       >
-        <template v-if="model" v-slot:append>
+        <template v-if="activity" v-slot:append>
           <q-icon
             name="cancel"
-            @click.stop.prevent="model = null"
+            @click.stop.prevent="activity = null"
             class="cursor-pointer"
           />
         </template>
       </q-select>
     </div>
     <div class="q-mt-sm row items-start q-gutter-lg">
-      <PetitionCard />
-      <PetitionCard />
-      <PetitionCard />
-      <PetitionCard />
-      <PetitionCard />
-      <PetitionCard />
-      <PetitionCard />
-      <PetitionCard />
-      <PetitionCard />
-      <PetitionCard />
-      <PetitionCard />
-      <PetitionCard />
+      <PetitionCard
+        v-for="(obj, index) in data"
+        :key="'petition_' + index"
+        :petition="obj"
+      />
     </div>
   </div>
 </template>
