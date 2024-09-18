@@ -1,0 +1,118 @@
+<script setup>
+import like from "../assets/like.svg";
+import dislike from "../assets/dislike.svg";
+import { usePetitionStore } from "../stores/petitionStore";
+import { useRouter } from "vue-router";
+import { onMounted } from "vue";
+import { ref } from "vue";
+
+const router = useRouter();
+
+const data = ref([]);
+const petitionStore = usePetitionStore();
+onMounted(async () => {
+  await petitionStore.fetchAllData();
+  data.value = petitionStore.getData;
+});
+
+const onClickView = (id) => {
+  router.push(`/petition/${id}`);
+};
+</script>
+
+<template>
+  <div class="row items-start q-gutter-lg">
+    <div v-for="(obj, index) in data" :key="'petition_' + index">
+      <q-card v-if="obj" class="my-card" flat bordered>
+        <q-card-section class="justify-between">
+          <q-img :src="obj.imageUrl" :ratio="16 / 9" class="card-image" />
+          <div class="text-overline text-grey">
+            {{ obj.create_date }}
+          </div>
+          <div class="text-caption text-grey q-mt-xs">
+            Наименование проблемы
+          </div>
+          <div class="text-h5 q-mb-md text-blue-10 text-weight-bold">
+            {{ obj.title }}
+            <!-- Организация зон отдыха и релаксации в офисах -->
+          </div>
+          <div class="text-caption text-grey">Подробное описание</div>
+          <div class="text-body1">
+            {{ obj.description }}
+          </div>
+          <div class="q-mt-xl q-mb-xs">
+            <div class="text-caption text-grey">Направление деятельности</div>
+            <div class="text-subtitle1 text-blue-10 text-weight-bold">
+              {{ obj.activity.name }}
+            </div>
+            <div class="text-caption text-grey">Классификация проблемы</div>
+            <div class="text-subtitle1 text-blue-10 text-weight-bold">
+              {{ obj.classification.name }}
+            </div>
+            <div class="text-caption text-grey">Автор проблемы</div>
+            <div class="text-subtitle1 text-blue-10 text-weight-bold">
+              {{ obj.author }}
+            </div>
+          </div>
+
+          <div class="text-subtitle1 text-positive text-weight-bold">
+            {{ obj.status }} 01.08.2024
+          </div>
+
+          <div class="q-mt-md row justify-between">
+            <div class="row">
+              <div class="row items-center">
+                <img :src="like" height="20px" alt="thumbs" />
+                <div
+                  class="q-ml-sm q-mt-xs text-overline text-info text-weight-bold"
+                >
+                  {{ obj.likes_count }}
+                </div>
+              </div>
+              <div class="row items-center q-ml-lg">
+                <img
+                  :src="dislike"
+                  height="20px"
+                  alt="thumbs"
+                  style="transform: scaleY(-1)"
+                  class="q-mt-sm"
+                />
+                <div
+                  class="q-ml-sm q-mt-xs text-overline text-info text-weight-bold"
+                >
+                  {{ obj.dislikes_count }}
+                </div>
+              </div>
+            </div>
+            <div>
+              <q-card-actions class="q-ml-lg row justify-end">
+                <q-btn
+                  rounded
+                  size="md"
+                  color="primary"
+                  label="Просмотреть"
+                  @click="onClickView(obj.id)"
+                  no-caps
+                />
+                <q-space />
+              </q-card-actions>
+            </div>
+          </div>
+        </q-card-section>
+      </q-card>
+    </div>
+  </div>
+</template>
+
+<style lang="sass" scoped>
+.my-card
+  width: 100%
+  max-width: 350px
+  border-radius: 20px
+
+.image-colored
+  color: #fff
+
+.card-image
+  border-radius: 10px
+</style>
