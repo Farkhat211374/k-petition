@@ -1,13 +1,20 @@
 <script setup>
 import ProblemCards from "src/components/ProblemCards.vue";
+import ProblemKpiMap from "src/components/ProblemKpiMap.vue";
+import ProblemKpiTable from "src/components/ProblemKpiTable.vue";
 import { ref } from "vue";
 
 const confirm = ref(false);
 const options = ref("all");
 const search = ref("");
+const vueOption = ref("map");
 
 const onClickCreate = () => {
   confirm.value = true;
+};
+
+const onChangeVue = (value) => {
+  vueOption.value = value;
 };
 
 const close = () => {
@@ -44,9 +51,27 @@ const close = () => {
           @click="onClickCreate"
         />
         <div class="q-gutter-x-md">
-          <q-btn padding="sm" color="white" text-color="grey" icon="map" />
-          <q-btn padding="sm" color="white" text-color="grey" icon="today" />
-          <q-btn padding="sm" color="info" icon="format_size" />
+          <q-btn
+            padding="sm"
+            :color="vueOption === 'map' ? 'info' : 'white'"
+            :text-color="vueOption === 'map' ? 'white' : 'grey'"
+            icon="map"
+            @click="onChangeVue('map')"
+          />
+          <q-btn
+            padding="sm"
+            :color="vueOption === 'table' ? 'info' : 'white'"
+            :text-color="vueOption === 'table' ? 'white' : 'grey'"
+            icon="today"
+            @click="onChangeVue('table')"
+          />
+          <q-btn
+            padding="sm"
+            :color="vueOption === 'cards' ? 'info' : 'white'"
+            :text-color="vueOption === 'cards' ? 'white' : 'grey'"
+            icon="format_size"
+            @click="onChangeVue('cards')"
+          />
         </div>
       </div>
       <div class="row items-center text-weight-bold" style="color: #a0a3b7">
@@ -60,7 +85,11 @@ const close = () => {
           ]"
         />
       </div>
-      <div class=""><ProblemCards /></div>
+      <div v-if="vueOption === 'cards'" class=""><ProblemCards /></div>
+      <div v-if="vueOption === 'table'" class="">
+        <ProblemKpiTable />
+      </div>
+      <div v-if="vueOption === 'map'" class=""><ProblemKpiMap /></div>
     </div>
   </div>
 </template>
