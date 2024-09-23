@@ -1,24 +1,21 @@
 <script setup>
+import CreateProblem from "src/components/dialogs/CreateProblem.vue";
 import ProblemCards from "src/components/ProblemCards.vue";
 import ProblemKpiMap from "src/components/ProblemKpiMap.vue";
 import ProblemKpiTable from "src/components/ProblemKpiTable.vue";
 import { ref } from "vue";
 
-const confirm = ref(false);
+const showCreateDialog = ref(false);
 const options = ref("all");
 const search = ref("");
 const vueOption = ref("map");
 
-const onClickCreate = () => {
-  confirm.value = true;
+const onClickCreateButton = () => {
+  showCreateDialog.value = true;
 };
 
 const onChangeVue = (value) => {
   vueOption.value = value;
-};
-
-const close = () => {
-  confirm.value = false;
 };
 </script>
 
@@ -48,7 +45,7 @@ const close = () => {
           label="Создать"
           class="text-weight-bold"
           no-caps
-          @click="onClickCreate"
+          @click="onClickCreateButton"
         />
         <div class="q-gutter-x-md">
           <q-btn
@@ -90,6 +87,7 @@ const close = () => {
         <ProblemKpiTable />
       </div>
       <div v-if="vueOption === 'map'" class=""><ProblemKpiMap /></div>
+      <CreateProblem v-model:showCreateDialog="showCreateDialog" />
     </div>
   </div>
 </template>
