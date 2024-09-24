@@ -16,12 +16,12 @@ const classification_options = ref([
   "Охрана труда",
 ]);
 const classification_model = ref("");
+const text = ref("");
 
 const props = defineProps({
   showCreateDialog: Boolean,
 });
 const emit = defineEmits(["update:showCreateDialog"]);
-
 const closeDialog = () => {
   emit("update:showCreateDialog", false);
 };
@@ -40,16 +40,13 @@ const closeDialog = () => {
       <q-separator />
       <q-card-section style="max-height: 60vh" class="scroll q-gutter-lg">
         <div class="row">
-          <q-uploader
-            flat
-            style="max-width: 170px"
-            hide-upload-btn
-            color="grey-3"
-            text-color="black"
-            label="Добавить изображения"
-            bordered
-            class="col"
-          />
+          <div class="uploader">
+            <q-icon size="lg" name="upload" color="lime-14" />
+            <span class="text-grey">
+              Добавить <br />
+              изображения
+            </span>
+          </div>
           <div class="col q-pl-lg">
             <div>
               <span class="infoHeadline">Наименование проблемы</span>
@@ -122,3 +119,24 @@ const closeDialog = () => {
     </q-card>
   </q-dialog>
 </template>
+
+<style lang="sass" scoped>
+.uploader
+  padding: 40px
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  background-color: #eeeeee
+  border: dashed #b6b6b6 1px
+  border-radius: 15px
+  max-width: 170px
+  gap: 10px
+  cursor: pointer
+  transition: border 1s ease, border-color 1s ease
+  span
+    text-align: center
+  &:hover
+    border: solid black 1px
+    border-radius: 15px
+</style>
