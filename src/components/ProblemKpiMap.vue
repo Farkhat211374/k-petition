@@ -1,10 +1,3 @@
-<template>
-  <div class="container">
-    <q-btn label="toggle" @click="onChangeOption" />
-    <v-chart class="chart" :option="option" autoresize />
-  </div>
-</template>
-
 <script setup>
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
@@ -21,7 +14,7 @@ import * as echarts from "echarts";
 
 import kazakhstanMap from "../assets/kz.json";
 const option = ref();
-const isAnimating = ref(false);
+const isLoading = ref(false);
 use([
   CanvasRenderer,
   MapChart,
@@ -57,15 +50,6 @@ const data = ref([
 
 const mapOption = ref({
   id: 0,
-  title: {
-    text: "Оценка активности по регионам",
-    left: "left",
-    textStyle: {
-      color: "#656c7d",
-      fontSize: 20,
-      fontWeight: "bold",
-    },
-  },
   tooltip: {
     trigger: "item",
     formatter: "{b}: {c}",
@@ -107,14 +91,9 @@ const mapOption = ref({
 
 const barOption = ref({
   id: 1,
-  title: {
-    text: "Оценка активности по регионам",
-    left: "left",
-    textStyle: {
-      color: "#656c7d",
-      fontSize: 20,
-      fontWeight: "bold",
-    },
+  tooltip: {
+    trigger: "item",
+    formatter: "{b}: {c}",
   },
   xAxis: {
     type: "value",
@@ -154,8 +133,7 @@ onMounted(() => {
 });
 
 const onChangeOption = () => {
-  if (isAnimating.value) return;
-  isAnimating.value = true;
+  isLoading.value = true;
   switch (option.value.id) {
     case 0:
       option.value = barOption.value;
@@ -166,18 +144,44 @@ const onChangeOption = () => {
     default:
       break;
   }
+
   setTimeout(() => {
-    isAnimating.value = false;
-  }, 1000);
+    isLoading.value = false;
+  }, 1800);
 };
 </script>
 
-<style scoped>
-.chart {
-  height: 78vh;
-  background-color: #fff;
-  border-radius: 20px;
-  padding: 20px;
-  overflow: hidden;
-}
+<template>
+  <div class="container">
+    <div class="map-header">
+      <div class="text-h6">Оценка активности по регионам</div>
+      <q-btn
+        padding="sm"
+        round
+        :loading="isLoading"
+        style="color: #656c7d"
+        outline
+        icon="my_location"
+        no-caps=""
+        @click="onChangeOption"
+      />
+    </div>
+    <v-chart class="chart" :option="option" autoresize />
+  </div>
+</template>
+
+<style lang="sass" scoped>
+.container
+  height: 78vh
+  background-color: #fff
+  border-radius: 20px
+  padding: 20px
+  overflow: hidden
+.map-header
+  display: flex
+  justify-content: space-between
+  div
+    color: #656c7d
+    font-weight: bold
+    font-size: 20px
 </style>

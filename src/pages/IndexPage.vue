@@ -8,7 +8,7 @@ import { ref } from "vue";
 const showCreateDialog = ref(false);
 const options = ref("all");
 const search = ref("");
-const vueOption = ref("map");
+const vueOption = ref("cards");
 
 const onClickCreateButton = () => {
   showCreateDialog.value = true;

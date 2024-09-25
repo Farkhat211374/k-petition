@@ -29,37 +29,46 @@ const onClickView = (id) => {
           <div class="text-overline text-grey">
             {{ obj.create_date }}
           </div>
-          <div class="text-caption text-grey q-mt-xs">
+          <div class="text-caption text-grey q-mt-xs text-weight-thin">
             Наименование проблемы
           </div>
-          <div class="text-h5 q-mb-md text-blue-10 text-weight-bold">
+          <div class="text-body1 q-mb-md highlighted-text text-weight-bold">
             {{ obj.title }}
-            <!-- Организация зон отдыха и релаксации в офисах -->
           </div>
-          <div class="text-caption text-grey">Подробное описание</div>
-          <div class="text-body1">
+          <div class="text-caption text-grey text-weight-thin">
+            Подробное описание
+          </div>
+          <div class="text-body2 text-grey-8 text-weight-medium">
             {{ obj.description }}
           </div>
-          <div class="q-mt-xl q-mb-xs">
-            <div class="text-caption text-grey">Направление деятельности</div>
-            <div class="text-subtitle1 text-blue-10 text-weight-bold">
+          <div class="q-mt-md q-mb-xs">
+            <div class="text-caption text-grey text-weight-thin">
+              Направление деятельности
+            </div>
+            <div class="text-body2 highlighted-text text-weight-bold">
               {{ obj.activity.name }}
             </div>
-            <div class="text-caption text-grey">Классификация проблемы</div>
-            <div class="text-subtitle1 text-blue-10 text-weight-bold">
+            <div class="text-caption text-grey text-weight-thin">
+              Классификация проблемы
+            </div>
+            <div class="text-body2 highlighted-text text-weight-bold">
               {{ obj.classification.name }}
             </div>
-            <div class="text-caption text-grey">Автор проблемы</div>
-            <div class="text-subtitle1 text-blue-10 text-weight-bold">
+            <div class="text-caption text-grey text-weight-thin">
+              Автор проблемы
+            </div>
+            <div class="text-body2 highlighted-text text-weight-bold">
               {{ obj.author }}
             </div>
           </div>
-
-          <div class="text-subtitle1 text-positive text-weight-bold">
-            {{ obj.status }} 01.08.2024
+          <div class="text-caption text-grey text-weight-thin">
+            Статус
+            <div class="text-body2 text-positive text-weight-bold">
+              {{ obj.status }} 01.08.2024
+            </div>
           </div>
 
-          <div class="q-mt-md row justify-between">
+          <div class="row justify-between">
             <div class="row">
               <div class="row items-center">
                 <img :src="like" height="20px" alt="thumbs" />
@@ -115,4 +124,7 @@ const onClickView = (id) => {
 
 .card-image
   border-radius: 10px
+
+.highlighted-text
+  color: #4d5870
 </style>
