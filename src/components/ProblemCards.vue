@@ -21,7 +21,7 @@ const onClickView = (id) => {
 </script>
 
 <template>
-  <div class="row items-start q-gutter-lg">
+  <div class="row items-start q-gutter-lg my-card-container">
     <div v-for="(obj, index) in data" :key="'petition_' + index">
       <q-card v-if="obj" class="my-card" flat bordered>
         <q-card-section class="justify-between">
@@ -114,10 +114,21 @@ const onClickView = (id) => {
 </template>
 
 <style lang="sass" scoped>
+.my-card-container
+  display: grid
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr))
+  gap: 16px
+
 .my-card
+  display: flex
+  flex-direction: column
   width: 100%
-  max-width: 350px
   border-radius: 20px
+  min-height: 400px
+  height: 100%
+
+.my-card .q-card-section
+  flex-grow: 1
 
 .image-colored
   color: #fff
