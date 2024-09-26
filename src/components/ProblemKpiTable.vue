@@ -8,8 +8,9 @@ const columns = ref([
     label: "Фото",
     align: "center",
     field: (row) => row.photo,
-    format: (val) => `<img src="${val}" alt="Фото" width="50" height="50" />`,
+    format: (val) => `<img src="${val}" alt="Фото" width="32" height="32" />`,
     sortable: false,
+    style: "width: 32px",
   },
   {
     name: "fullname",
@@ -18,6 +19,7 @@ const columns = ref([
     align: "center",
     field: (row) => row.fullname,
     format: (val) => `${val}`,
+    style: "width: 20%;",
     sortable: true,
   },
   {
@@ -25,6 +27,7 @@ const columns = ref([
     align: "center",
     label: "Должность",
     field: (row) => row.position,
+    style: "width: 20%",
     sortable: true,
   },
   {
@@ -32,12 +35,14 @@ const columns = ref([
     align: "center",
     label: "Подразделение",
     field: (row) => row.division,
+    style: "width: 45%",
     sortable: true,
   },
   {
     name: "activity",
     align: "center",
     label: "Активность",
+    style: "width: 15%",
     field: (row) => row.activity,
   },
 ]);
@@ -139,13 +144,37 @@ const rows = ref([
     division: "Отдел тестирования",
     activity: "Неактивен",
   },
+  {
+    photo:
+      "https://img.freepik.com/psd-gratis/render-3d-personaje-avatar_23-2150611725.jpg",
+    fullname: "Иван Иванов",
+    position: "Разработчик",
+    division: "Отдел разработки",
+    activity: "Активен",
+  },
+  {
+    photo:
+      "https://img.freepik.com/psd-premium/render-3d-personaje-avatar_23-2150611777.jpg",
+    fullname: "Петр Петров",
+    position: "Тестировщик",
+    division: "Отдел тестирования",
+    activity: "Неактивен",
+  },
+  {
+    photo:
+      "https://img.freepik.com/psd-gratis/render-3d-personaje-avatar_23-2150611737.jpg?w=360",
+    fullname: "Иван Иванов",
+    position: "Разработчик",
+    division: "Отдел разработки",
+    activity: "Активен",
+  },
 ]);
 
 const initialPagination = ref({
   sortBy: "desc",
   descending: false,
   page: 1,
-  rowsPerPage: 10,
+  rowsPerPage: 13,
 });
 </script>
 
@@ -163,7 +192,7 @@ const initialPagination = ref({
     >
       <template v-slot:body-cell-photo="props">
         <q-td :props="props" class="avatar">
-          <img :src="props.row.photo" alt="Фото" width="50" height="50" />
+          <img :src="props.row.photo" alt="Фото" width="32" height="32" />
         </q-td>
       </template>
     </q-table>
@@ -177,18 +206,27 @@ const initialPagination = ref({
     background-color: #c5cfd9
     color: #fff
     font-weight: bold
+
+  ::v-deep tbody tr
+    color: #6e6e6e
+
   ::v-deep tbody tr:nth-child(odd)
     background-color: #f1f0f5
 
   ::v-deep tbody tr:hover
-    background-color: #0178d4
+    background-color: #1ebbe3
     color: #fff
+    img
+      border: solid #fff 1px
 
+  ::v-deep tbody tr:hover td
+    color: #ffffff
 
 .avatar
-  width: 50px
-  height: 50px
+  width: 32px
+  height: 32px
   img
+    border: solid #6e6e6e 1px
     border-radius: 50%
     object-fit: cover
 </style>

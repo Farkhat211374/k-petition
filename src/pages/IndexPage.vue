@@ -1,24 +1,31 @@
 <script setup>
+import CreateProblem from "src/components/dialogs/CreateEditProblemDialog.vue";
 import ProblemCards from "src/components/ProblemCards.vue";
 import ProblemKpiMap from "src/components/ProblemKpiMap.vue";
 import ProblemKpiTable from "src/components/ProblemKpiTable.vue";
+import { usePetitionStore } from "../stores/petitionStore";
+import { onMounted } from "vue";
 import { ref } from "vue";
 
-const confirm = ref(false);
+const data = ref([]);
+const petitionStore = usePetitionStore();
+
+onMounted(async () => {
+  await petitionStore.fetchAllData();
+  data.value = petitionStore.getData;
+});
+
+const showCreateDialog = ref(false);
 const options = ref("all");
 const search = ref("");
-const vueOption = ref("map");
+const vueOption = ref("cards");
 
-const onClickCreate = () => {
-  confirm.value = true;
+const onClickCreateButton = () => {
+  showCreateDialog.value = true;
 };
 
 const onChangeVue = (value) => {
   vueOption.value = value;
-};
-
-const close = () => {
-  confirm.value = false;
 };
 </script>
 
@@ -47,14 +54,16 @@ const close = () => {
           icon-right="add"
           label="Создать"
           class="text-weight-bold"
+          unelevated
           no-caps
-          @click="onClickCreate"
+          @click="onClickCreateButton"
         />
         <div class="q-gutter-x-md">
           <q-btn
             padding="sm"
             :color="vueOption === 'map' ? 'info' : 'white'"
             :text-color="vueOption === 'map' ? 'white' : 'grey'"
+            unelevated
             icon="map"
             @click="onChangeVue('map')"
           />
@@ -62,6 +71,7 @@ const close = () => {
             padding="sm"
             :color="vueOption === 'table' ? 'info' : 'white'"
             :text-color="vueOption === 'table' ? 'white' : 'grey'"
+            unelevated
             icon="today"
             @click="onChangeVue('table')"
           />
@@ -69,6 +79,7 @@ const close = () => {
             padding="sm"
             :color="vueOption === 'cards' ? 'info' : 'white'"
             :text-color="vueOption === 'cards' ? 'white' : 'grey'"
+            unelevated
             icon="format_size"
             @click="onChangeVue('cards')"
           />
@@ -85,11 +96,14 @@ const close = () => {
           ]"
         />
       </div>
-      <div v-if="vueOption === 'cards'" class=""><ProblemCards /></div>
-      <div v-if="vueOption === 'table'" class="">
-        <ProblemKpiTable />
+
+      <div>
+        <ProblemKpiTable v-if="vueOption === 'table'" />
+        <ProblemKpiMap v-if="vueOption === 'map'" />
+        <ProblemCards v-if="vueOption === 'cards'" :data="data" />
       </div>
-      <div v-if="vueOption === 'map'" class=""><ProblemKpiMap /></div>
+
+      <CreateProblem v-model:showCreateDialog="showCreateDialog" />
     </div>
   </div>
 </template>

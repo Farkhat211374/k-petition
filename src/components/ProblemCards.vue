@@ -1,65 +1,79 @@
 <script setup>
 import like from "../assets/like.svg";
 import dislike from "../assets/dislike.svg";
-import { usePetitionStore } from "../stores/petitionStore";
-import { useRouter } from "vue-router";
-import { onMounted } from "vue";
 import { ref } from "vue";
+import ReadProblemDialog from "./dialogs/ReadProblemDialog .vue";
 
-const router = useRouter();
+const viewObject = ref({});
 
-const data = ref([]);
-const petitionStore = usePetitionStore();
-onMounted(async () => {
-  await petitionStore.fetchAllData();
-  data.value = petitionStore.getData;
+defineProps({
+  data: Object,
 });
+const showReadDialog = ref(false);
 
-const onClickView = (id) => {
-  router.push(`/petition/${id}`);
+const onClickView = (obj) => {
+  viewObject.value = obj;
+  showReadDialog.value = true;
 };
 </script>
 
 <template>
-  <div class="row items-start q-gutter-lg">
+  <ReadProblemDialog
+    v-model:showReadDialog="showReadDialog"
+    :data="viewObject"
+  />
+  <div class="row items-stretch q-gutter-lg my-card-container">
     <div v-for="(obj, index) in data" :key="'petition_' + index">
       <q-card v-if="obj" class="my-card" flat bordered>
-        <q-card-section class="justify-between">
+        <q-card-section class="custom-card-section">
           <q-img :src="obj.imageUrl" :ratio="16 / 9" class="card-image" />
           <div class="text-overline text-grey">
             {{ obj.create_date }}
           </div>
-          <div class="text-caption text-grey q-mt-xs">
+          <div class="text-caption text-grey q-mt-xs text-weight-thin">
             Наименование проблемы
           </div>
-          <div class="text-h5 q-mb-md text-blue-10 text-weight-bold">
+          <div
+            class="text-title text-body1 q-mb-md highlighted-text text-weight-bold"
+          >
             {{ obj.title }}
-            <!-- Организация зон отдыха и релаксации в офисах -->
           </div>
-          <div class="text-caption text-grey">Подробное описание</div>
-          <div class="text-body1">
+          <div class="text-caption text-grey text-weight-thin">
+            Подробное описание
+          </div>
+          <div
+            class="text-body2 text-grey-8 text-weight-medium text-description"
+          >
             {{ obj.description }}
           </div>
-          <div class="q-mt-xl q-mb-xs">
-            <div class="text-caption text-grey">Направление деятельности</div>
-            <div class="text-subtitle1 text-blue-10 text-weight-bold">
+          <div class="q-mt-md q-mb-xs">
+            <div class="text-caption text-grey text-weight-thin">
+              Направление деятельности
+            </div>
+            <div class="text-body2 highlighted-text text-weight-bold">
               {{ obj.activity.name }}
             </div>
-            <div class="text-caption text-grey">Классификация проблемы</div>
-            <div class="text-subtitle1 text-blue-10 text-weight-bold">
+            <div class="text-caption text-grey text-weight-thin">
+              Классификация проблемы
+            </div>
+            <div class="text-body2 highlighted-text text-weight-bold">
               {{ obj.classification.name }}
             </div>
-            <div class="text-caption text-grey">Автор проблемы</div>
-            <div class="text-subtitle1 text-blue-10 text-weight-bold">
+            <div class="text-caption text-grey text-weight-thin">
+              Автор проблемы
+            </div>
+            <div class="text-body2 highlighted-text text-weight-bold">
               {{ obj.author }}
             </div>
           </div>
-
-          <div class="text-subtitle1 text-positive text-weight-bold">
-            {{ obj.status }} 01.08.2024
+          <div class="text-caption text-grey text-weight-thin">
+            Статус
+            <div class="text-body2 text-positive text-weight-bold">
+              {{ obj.status }} 01.08.2024
+            </div>
           </div>
 
-          <div class="q-mt-md row justify-between">
+          <div class="row justify-between">
             <div class="row">
               <div class="row items-center">
                 <img :src="like" height="20px" alt="thumbs" />
@@ -90,8 +104,9 @@ const onClickView = (id) => {
                   rounded
                   size="md"
                   color="primary"
+                  unelevated
                   label="Просмотреть"
-                  @click="onClickView(obj.id)"
+                  @click="onClickView(obj)"
                   no-caps
                 />
                 <q-space />
@@ -105,14 +120,50 @@ const onClickView = (id) => {
 </template>
 
 <style lang="sass" scoped>
+.my-card-container
+  display: grid
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr))
+  grid-gap: 16px
+
 .my-card
+  display: flex
+  flex-direction: column
   width: 100%
-  max-width: 350px
   border-radius: 20px
+  min-height: 400px
+  height: 100%
+  cursor: pointer
+  &:hover
+    border: solid #1ebbe3 1px
+
+.text-title
+  max-height: 100px
+  overflow: hidden
+  text-overflow: ellipsis
+  display: -webkit-box
+  -webkit-line-clamp: 2
+  -webkit-box-orient: vertical
+
+.text-description
+  max-height: 100px
+  overflow: hidden
+  text-overflow: ellipsis
+  display: -webkit-box
+  -webkit-line-clamp: 4
+  -webkit-box-orient: vertical
+
+.custom-card-section
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+  height: 100%
 
 .image-colored
   color: #fff
 
 .card-image
   border-radius: 10px
+
+.highlighted-text
+  color: #4d5870
 </style>
