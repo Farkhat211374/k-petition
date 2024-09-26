@@ -13,7 +13,7 @@ import { ref, onMounted } from "vue";
 import * as echarts from "echarts";
 
 import kazakhstanMap from "../assets/kz.json";
-const option = ref();
+const option = ref({});
 const isLoading = ref(false);
 use([
   CanvasRenderer,

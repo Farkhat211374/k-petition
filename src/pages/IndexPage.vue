@@ -3,12 +3,21 @@ import CreateProblem from "src/components/dialogs/CreateEditProblemDialog.vue";
 import ProblemCards from "src/components/ProblemCards.vue";
 import ProblemKpiMap from "src/components/ProblemKpiMap.vue";
 import ProblemKpiTable from "src/components/ProblemKpiTable.vue";
-import { ref, shallowRef } from "vue";
+import { usePetitionStore } from "../stores/petitionStore";
+import { onMounted } from "vue";
+import { ref } from "vue";
+
+const data = ref([]);
+const petitionStore = usePetitionStore();
+
+onMounted(async () => {
+  await petitionStore.fetchAllData();
+  data.value = petitionStore.getData;
+});
 
 const showCreateDialog = ref(false);
 const options = ref("all");
 const search = ref("");
-const currentComponent = shallowRef("ProblemCards");
 const vueOption = ref("cards");
 
 const onClickCreateButton = () => {
@@ -17,17 +26,6 @@ const onClickCreateButton = () => {
 
 const onChangeVue = (value) => {
   vueOption.value = value;
-  switch (value) {
-    case "cards":
-      currentComponent.value = ProblemCards;
-      break;
-    case "table":
-      currentComponent.value = ProblemKpiTable;
-      break;
-    case "map":
-      currentComponent.value = ProblemKpiMap;
-      break;
-  }
 };
 </script>
 
@@ -56,6 +54,7 @@ const onChangeVue = (value) => {
           icon-right="add"
           label="Создать"
           class="text-weight-bold"
+          unelevated
           no-caps
           @click="onClickCreateButton"
         />
@@ -64,6 +63,7 @@ const onChangeVue = (value) => {
             padding="sm"
             :color="vueOption === 'map' ? 'info' : 'white'"
             :text-color="vueOption === 'map' ? 'white' : 'grey'"
+            unelevated
             icon="map"
             @click="onChangeVue('map')"
           />
@@ -71,6 +71,7 @@ const onChangeVue = (value) => {
             padding="sm"
             :color="vueOption === 'table' ? 'info' : 'white'"
             :text-color="vueOption === 'table' ? 'white' : 'grey'"
+            unelevated
             icon="today"
             @click="onChangeVue('table')"
           />
@@ -78,6 +79,7 @@ const onChangeVue = (value) => {
             padding="sm"
             :color="vueOption === 'cards' ? 'info' : 'white'"
             :text-color="vueOption === 'cards' ? 'white' : 'grey'"
+            unelevated
             icon="format_size"
             @click="onChangeVue('cards')"
           />
@@ -95,9 +97,11 @@ const onChangeVue = (value) => {
         />
       </div>
 
-      <transition appear enter="fadeIn" leave="fadeOut">
-        <component :is="currentComponent" />
-      </transition>
+      <div>
+        <ProblemKpiTable v-if="vueOption === 'table'" />
+        <ProblemKpiMap v-if="vueOption === 'map'" />
+        <ProblemCards v-if="vueOption === 'cards'" :data="data" />
+      </div>
 
       <CreateProblem v-model:showCreateDialog="showCreateDialog" />
     </div>

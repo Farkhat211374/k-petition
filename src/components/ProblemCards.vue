@@ -1,26 +1,27 @@
 <script setup>
 import like from "../assets/like.svg";
 import dislike from "../assets/dislike.svg";
-import { usePetitionStore } from "../stores/petitionStore";
-import { useRouter } from "vue-router";
-import { onMounted } from "vue";
 import { ref } from "vue";
+import ReadProblemDialog from "./dialogs/ReadProblemDialog .vue";
 
-const router = useRouter();
+const viewObject = ref({});
 
-const data = ref([]);
-const petitionStore = usePetitionStore();
-onMounted(async () => {
-  await petitionStore.fetchAllData();
-  data.value = petitionStore.getData;
+defineProps({
+  data: Object,
 });
+const showReadDialog = ref(false);
 
-const onClickView = (id) => {
-  router.push(`/petition/${id}`);
+const onClickView = (obj) => {
+  viewObject.value = obj;
+  showReadDialog.value = true;
 };
 </script>
 
 <template>
+  <ReadProblemDialog
+    v-model:showReadDialog="showReadDialog"
+    :data="viewObject"
+  />
   <div class="row items-stretch q-gutter-lg my-card-container">
     <div v-for="(obj, index) in data" :key="'petition_' + index">
       <q-card v-if="obj" class="my-card" flat bordered>
@@ -103,8 +104,9 @@ const onClickView = (id) => {
                   rounded
                   size="md"
                   color="primary"
+                  unelevated
                   label="Просмотреть"
-                  @click="onClickView(obj.id)"
+                  @click="onClickView(obj)"
                   no-caps
                 />
                 <q-space />
