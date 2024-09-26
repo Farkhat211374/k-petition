@@ -21,10 +21,10 @@ const onClickView = (id) => {
 </script>
 
 <template>
-  <div class="row items-start q-gutter-lg my-card-container">
+  <div class="row items-stretch q-gutter-lg my-card-container">
     <div v-for="(obj, index) in data" :key="'petition_' + index">
       <q-card v-if="obj" class="my-card" flat bordered>
-        <q-card-section class="justify-between">
+        <q-card-section class="custom-card-section">
           <q-img :src="obj.imageUrl" :ratio="16 / 9" class="card-image" />
           <div class="text-overline text-grey">
             {{ obj.create_date }}
@@ -32,13 +32,17 @@ const onClickView = (id) => {
           <div class="text-caption text-grey q-mt-xs text-weight-thin">
             Наименование проблемы
           </div>
-          <div class="text-body1 q-mb-md highlighted-text text-weight-bold">
+          <div
+            class="text-title text-body1 q-mb-md highlighted-text text-weight-bold"
+          >
             {{ obj.title }}
           </div>
           <div class="text-caption text-grey text-weight-thin">
             Подробное описание
           </div>
-          <div class="text-body2 text-grey-8 text-weight-medium">
+          <div
+            class="text-body2 text-grey-8 text-weight-medium text-description"
+          >
             {{ obj.description }}
           </div>
           <div class="q-mt-md q-mb-xs">
@@ -117,7 +121,7 @@ const onClickView = (id) => {
 .my-card-container
   display: grid
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr))
-  gap: 16px
+  grid-gap: 16px
 
 .my-card
   display: flex
@@ -126,9 +130,31 @@ const onClickView = (id) => {
   border-radius: 20px
   min-height: 400px
   height: 100%
+  cursor: pointer
+  &:hover
+    border: solid #1ebbe3 1px
 
-.my-card .q-card-section
-  flex-grow: 1
+.text-title
+  max-height: 100px
+  overflow: hidden
+  text-overflow: ellipsis
+  display: -webkit-box
+  -webkit-line-clamp: 2
+  -webkit-box-orient: vertical
+
+.text-description
+  max-height: 100px
+  overflow: hidden
+  text-overflow: ellipsis
+  display: -webkit-box
+  -webkit-line-clamp: 4
+  -webkit-box-orient: vertical
+
+.custom-card-section
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+  height: 100%
 
 .image-colored
   color: #fff

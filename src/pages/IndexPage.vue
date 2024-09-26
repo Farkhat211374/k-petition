@@ -1,13 +1,14 @@
 <script setup>
-import CreateProblem from "src/components/dialogs/CreateProblem.vue";
+import CreateProblem from "src/components/dialogs/CreateEditProblemDialog.vue";
 import ProblemCards from "src/components/ProblemCards.vue";
 import ProblemKpiMap from "src/components/ProblemKpiMap.vue";
 import ProblemKpiTable from "src/components/ProblemKpiTable.vue";
-import { ref } from "vue";
+import { ref, shallowRef } from "vue";
 
 const showCreateDialog = ref(false);
 const options = ref("all");
 const search = ref("");
+const currentComponent = shallowRef("ProblemCards");
 const vueOption = ref("cards");
 
 const onClickCreateButton = () => {
@@ -16,6 +17,17 @@ const onClickCreateButton = () => {
 
 const onChangeVue = (value) => {
   vueOption.value = value;
+  switch (value) {
+    case "cards":
+      currentComponent.value = ProblemCards;
+      break;
+    case "table":
+      currentComponent.value = ProblemKpiTable;
+      break;
+    case "map":
+      currentComponent.value = ProblemKpiMap;
+      break;
+  }
 };
 </script>
 
@@ -82,11 +94,11 @@ const onChangeVue = (value) => {
           ]"
         />
       </div>
-      <div v-if="vueOption === 'cards'" class=""><ProblemCards /></div>
-      <div v-if="vueOption === 'table'" class="">
-        <ProblemKpiTable />
-      </div>
-      <div v-if="vueOption === 'map'" class=""><ProblemKpiMap /></div>
+
+      <transition appear enter="fadeIn" leave="fadeOut">
+        <component :is="currentComponent" />
+      </transition>
+
       <CreateProblem v-model:showCreateDialog="showCreateDialog" />
     </div>
   </div>
