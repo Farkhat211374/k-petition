@@ -2,12 +2,7 @@
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { MapChart, BarChart } from "echarts/charts";
-import {
-  TitleComponent,
-  TooltipComponent,
-  VisualMapComponent,
-  GridComponent,
-} from "echarts/components";
+import { TooltipComponent, GridComponent } from "echarts/components";
 import VChart from "vue-echarts";
 import { ref, onMounted } from "vue";
 import * as echarts from "echarts";
@@ -15,15 +10,7 @@ import * as echarts from "echarts";
 import kazakhstanMap from "../assets/kz.json";
 const option = ref({});
 const isLoading = ref(false);
-use([
-  CanvasRenderer,
-  MapChart,
-  BarChart,
-  TitleComponent,
-  TooltipComponent,
-  VisualMapComponent,
-  GridComponent,
-]);
+use([CanvasRenderer, MapChart, BarChart, TooltipComponent, GridComponent]);
 
 const data = ref([
   { name: "Астана", value: 12 },

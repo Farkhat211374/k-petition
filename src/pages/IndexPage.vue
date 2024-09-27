@@ -4,21 +4,39 @@ import ProblemCards from "src/components/ProblemCards.vue";
 import ProblemKpiMap from "src/components/ProblemKpiMap.vue";
 import ProblemKpiTable from "src/components/ProblemKpiTable.vue";
 import { usePetitionStore } from "../stores/petitionStore";
-import { onMounted } from "vue";
-import { ref } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { useQuasar } from "quasar";
 
 const data = ref([]);
 const petitionStore = usePetitionStore();
+const $q = useQuasar();
+let timer;
 
 onMounted(async () => {
+  showLoading();
   await petitionStore.fetchAllData();
   data.value = petitionStore.getData;
+});
+
+onBeforeUnmount(async () => {
+  if (timer !== void 0) {
+    clearTimeout(timer);
+  }
+  $q.loading.hide();
 });
 
 const showCreateDialog = ref(false);
 const options = ref("all");
 const search = ref("");
 const vueOption = ref("cards");
+
+const showLoading = () => {
+  $q.loading.show();
+  timer = setTimeout(() => {
+    $q.loading.hide();
+    timer = void 0;
+  }, 2000);
+};
 
 const onClickCreateButton = () => {
   showCreateDialog.value = true;
@@ -61,11 +79,11 @@ const onChangeVue = (value) => {
         <div class="q-gutter-x-md">
           <q-btn
             padding="sm"
-            :color="vueOption === 'map' ? 'info' : 'white'"
-            :text-color="vueOption === 'map' ? 'white' : 'grey'"
+            :color="vueOption === 'cards' ? 'info' : 'white'"
+            :text-color="vueOption === 'cards' ? 'white' : 'grey'"
             unelevated
-            icon="map"
-            @click="onChangeVue('map')"
+            icon="format_size"
+            @click="onChangeVue('cards')"
           />
           <q-btn
             padding="sm"
@@ -75,13 +93,14 @@ const onChangeVue = (value) => {
             icon="today"
             @click="onChangeVue('table')"
           />
+
           <q-btn
             padding="sm"
-            :color="vueOption === 'cards' ? 'info' : 'white'"
-            :text-color="vueOption === 'cards' ? 'white' : 'grey'"
+            :color="vueOption === 'map' ? 'info' : 'white'"
+            :text-color="vueOption === 'map' ? 'white' : 'grey'"
             unelevated
-            icon="format_size"
-            @click="onChangeVue('cards')"
+            icon="map"
+            @click="onChangeVue('map')"
           />
         </div>
       </div>
