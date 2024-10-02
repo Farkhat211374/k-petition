@@ -11,9 +11,33 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> АРМ Проблема </q-toolbar-title>
+        <q-toolbar-title> {{ t("problemPage.title") }} </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>
+          <q-btn-group rounded>
+            <q-btn
+              rounded
+              :color="locale === 'kk-KZ' ? 'info' : 'white'"
+              :text-color="locale === 'kk-KZ' ? 'white' : 'primary'"
+              label="KZ"
+              @click="switchLanguage('kk-KZ')"
+            />
+            <q-btn
+              rounded
+              :color="locale === 'ru-RU' ? 'info' : 'white'"
+              :text-color="locale === 'ru-RU' ? 'white' : 'primary'"
+              label="RU"
+              @click="switchLanguage('ru-RU')"
+            />
+            <q-btn
+              rounded
+              :color="locale === 'en-US' ? 'info' : 'white'"
+              :text-color="locale === 'en-US' ? 'white' : 'primary'"
+              label="EN"
+              @click="switchLanguage('en-US')"
+            />
+          </q-btn-group>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -38,6 +62,8 @@
 <script setup>
 import { ref } from "vue";
 import EssentialLink from "components/EssentialLink.vue";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 
 defineOptions({
   name: "MainLayout",
@@ -93,4 +119,8 @@ const leftDrawerOpen = ref(false);
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
+
+const switchLanguage = (lang) => {
+  locale.value = lang;
+};
 </script>

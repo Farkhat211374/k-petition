@@ -1,11 +1,13 @@
 <script setup>
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const columns = ref([
   {
     name: "photo",
     required: true,
-    label: "Фото",
+    label: t("problemPage.problemTable.photo"),
     align: "center",
     field: (row) => row.photo,
     format: (val) => `<img src="${val}" alt="Фото" width="32" height="32" />`,
@@ -15,7 +17,7 @@ const columns = ref([
   {
     name: "fullname",
     required: true,
-    label: "ФИО",
+    label: t("problemPage.problemTable.fullname"),
     align: "center",
     field: (row) => row.fullname,
     format: (val) => `${val}`,
@@ -25,7 +27,7 @@ const columns = ref([
   {
     name: "position",
     align: "center",
-    label: "Должность",
+    label: t("problemPage.problemTable.position"),
     field: (row) => row.position,
     style: "width: 20%",
     sortable: true,
@@ -33,7 +35,7 @@ const columns = ref([
   {
     name: "division",
     align: "center",
-    label: "Подразделение",
+    label: t("problemPage.problemTable.division"),
     field: (row) => row.division,
     style: "width: 45%",
     sortable: true,
@@ -41,7 +43,7 @@ const columns = ref([
   {
     name: "activity",
     align: "center",
-    label: "Активность",
+    label: t("problemPage.problemTable.activity"),
     style: "width: 15%",
     field: (row) => row.activity,
   },

@@ -6,6 +6,8 @@ import { TooltipComponent, GridComponent } from "echarts/components";
 import VChart from "vue-echarts";
 import { ref, onMounted } from "vue";
 import * as echarts from "echarts";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 import kazakhstanMap from "../assets/kz.json";
 const option = ref({});
@@ -141,7 +143,7 @@ const onChangeOption = () => {
 <template>
   <div class="container">
     <div class="map-header">
-      <div class="text-h6">Оценка активности по регионам</div>
+      <div class="text-h6">{{ t("problemPage.problemMap.title") }}</div>
       <q-btn
         padding="sm"
         round

@@ -6,6 +6,8 @@ import ProblemKpiTable from "src/components/ProblemKpiTable.vue";
 import { usePetitionStore } from "../stores/petitionStore";
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useQuasar } from "quasar";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const data = ref([]);
 const petitionStore = usePetitionStore();
@@ -60,7 +62,7 @@ const onChangeVue = (value) => {
           outlined
           dense
           clearable
-          placeholder="Поиск"
+          :placeholder="$t('search')"
         >
           <template v-slot:append>
             <q-icon name="search" />
@@ -70,7 +72,7 @@ const onChangeVue = (value) => {
           padding="sm"
           color="primary"
           icon-right="add"
-          label="Создать"
+          :label="$t('buttons.create')"
           class="text-weight-bold"
           unelevated
           no-caps
@@ -109,9 +111,12 @@ const onChangeVue = (value) => {
           v-model="options"
           inline
           :options="[
-            { label: 'Все проблемы', value: 'all' },
-            { label: 'Активные проблемы', value: 'active' },
-            { label: 'Завершенные проблемы', value: 'closed' },
+            { label: t('problemPage.problemOptions.all'), value: 'all' },
+            { label: t('problemPage.problemOptions.active'), value: 'active' },
+            {
+              label: t('problemPage.problemOptions.completed'),
+              value: 'closed',
+            },
           ]"
         />
       </div>

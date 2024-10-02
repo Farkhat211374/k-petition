@@ -3,9 +3,10 @@ import like from "../assets/like.svg";
 import dislike from "../assets/dislike.svg";
 import { ref } from "vue";
 import ReadProblemDialog from "./dialogs/ReadProblemDialog .vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const viewObject = ref({});
-
 defineProps({
   data: Object,
 });
@@ -31,7 +32,7 @@ const onClickView = (obj) => {
             {{ obj.create_date }}
           </div>
           <div class="text-caption text-grey q-mt-xs text-weight-thin">
-            Наименование проблемы
+            {{ t("problemPage.problemCard.name") }}
           </div>
           <div
             class="text-title text-body1 q-mb-md highlighted-text text-weight-bold"
@@ -39,7 +40,7 @@ const onClickView = (obj) => {
             {{ obj.title }}
           </div>
           <div class="text-caption text-grey text-weight-thin">
-            Подробное описание
+            {{ t("problemPage.problemCard.detailedDescription") }}
           </div>
           <div
             class="text-body2 text-grey-8 text-weight-medium text-description"
@@ -48,26 +49,26 @@ const onClickView = (obj) => {
           </div>
           <div class="q-mt-md q-mb-xs">
             <div class="text-caption text-grey text-weight-thin">
-              Направление деятельности
+              {{ t("problemPage.problemCard.activity") }}
             </div>
             <div class="text-body2 highlighted-text text-weight-bold">
               {{ obj.activity.name }}
             </div>
             <div class="text-caption text-grey text-weight-thin">
-              Классификация проблемы
+              {{ t("problemPage.problemCard.classification") }}
             </div>
             <div class="text-body2 highlighted-text text-weight-bold">
               {{ obj.classification.name }}
             </div>
             <div class="text-caption text-grey text-weight-thin">
-              Автор проблемы
+              {{ t("problemPage.problemCard.author") }}
             </div>
             <div class="text-body2 highlighted-text text-weight-bold">
               {{ obj.author }}
             </div>
           </div>
           <div class="text-caption text-grey text-weight-thin">
-            Статус
+            {{ t("problemPage.problemCard.status") }}
             <div class="text-body2 text-positive text-weight-bold">
               {{ obj.status }} 01.08.2024
             </div>
@@ -101,11 +102,12 @@ const onClickView = (obj) => {
             <div>
               <q-card-actions class="q-ml-lg row justify-end">
                 <q-btn
+                  class="view-button"
                   rounded
                   size="md"
                   color="primary"
                   unelevated
-                  label="Просмотреть"
+                  :label="$t('buttons.view')"
                   @click="onClickView(obj)"
                   no-caps
                 />
@@ -166,4 +168,7 @@ const onClickView = (obj) => {
 
 .highlighted-text
   color: #4d5870
+
+.view-button
+  min-width: 100px
 </style>
