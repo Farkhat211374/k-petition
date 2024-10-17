@@ -5,7 +5,7 @@ export default {
     view: "Қарау",
   },
   problemPage: {
-    title: "АРМ Мәселе",
+    title: "АРМ Проблема",
     problemOptions: {
       all: "Барлық мәселелер",
       active: "Белсенді мәселелер",

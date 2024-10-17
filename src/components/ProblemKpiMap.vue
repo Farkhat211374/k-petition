@@ -98,16 +98,7 @@ const barOption = ref({
     {
       type: "bar",
       itemStyle: {
-        color: function (params) {
-          const value = params.value;
-          if (value < 10) {
-            return "#d62728";
-          } else if (value < 20) {
-            return "#ffe947";
-          } else if (value < 30) {
-            return "#2ca02c";
-          }
-        },
+        color: "#8694bf",
       },
       data: data.value.map((item) => item.value),
       animationDurationUpdate: 1000,

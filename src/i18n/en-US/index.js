@@ -5,7 +5,7 @@ export default {
     view: "View",
   },
   problemPage: {
-    title: "ARM Problem",
+    title: "АРМ Проблема",
     problemOptions: {
       all: "All problems",
       active: "Active problems",
